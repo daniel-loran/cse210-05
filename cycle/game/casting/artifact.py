@@ -1,31 +1,26 @@
 from game.casting.actor import Actor
+from game.shared.color import Color
 
 
 class Artifact(Actor):
-    """
-    An item of cultural or historical interest. 
-    
-    The responsibility of an Artifact is to provide a message about itself.
+    # Places an artifact trail behind the actor. The artifact trail is a list of '#' characters.
 
-    Attributes:
-        _message (string): A short description about the artifact.
-    """
+    BLUE = Color(0, 0, 255)
+
     def __init__(self):
         super().__init__()
-        self._message = ""
-        
-    def get_message(self):
-        """Gets the artifact's message.
-        
-        Returns:
-            string: The message.
-        """
-        return self._message
-    
-    def set_message(self, message):
-        """Updates the message to the given one.
-        
-        Args:
-            message (string): The given message.
-        """
-        self._message = message
+
+
+    def grow_trail(self, number_of_segments):
+        for i in range(number_of_segments):
+            tail = self._segments[-1]
+            velocity = tail.get_velocity()
+            offset = velocity.reverse()
+            position = tail.get_position().add(offset)
+            
+            segment = Actor()
+            segment.set_position(position)
+            segment.set_velocity(velocity)
+            segment.set_text("#")
+            segment.set_color(Artifact.BLUE)
+            self._segments.append(segment)

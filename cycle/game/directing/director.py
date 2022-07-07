@@ -27,6 +27,7 @@ class Director:
         self._video_service.open_window()
         while self._video_service.is_window_open():
             self._get_inputs(cast)
+            self._get_inputs_p2(cast)
             self._do_updates(cast)
             self._do_outputs(cast)
         self._video_service.close_window()
@@ -37,9 +38,21 @@ class Director:
         Args:
             cast (Cast): The cast of actors.
         """
-        robot = cast.get_first_actor("robots")
+        player1 = cast.get_first_actor("player1")
         velocity = self._keyboard_service.get_direction()
-        robot.set_velocity(velocity)        
+        player1.set_velocity(velocity)        
+
+    def _get_inputs_p2(self, cast):
+        """Gets directional input from the keyboard and applies it to the robot.
+        
+        Args:
+            cast (Cast): The cast of actors.
+        """
+        player2 = cast.get_second_actor("player2")
+        velocity = self._keyboard_service.get_direction_p2()
+        player2.set_velocity(velocity)   
+
+     
 
     def _do_updates(self, cast):
         """Updates the robot's position and resolves any collisions with artifacts.
@@ -48,18 +61,27 @@ class Director:
             cast (Cast): The cast of actors.
         """
         banner = cast.get_first_actor("banners")
-        robot = cast.get_first_actor("robots")
+        player1 = cast.get_first_actor("player1")
+        player2 = cast.get_first_actor("player2")
         artifacts = cast.get_actors("artifacts")
 
         banner.set_text("")
         max_x = self._video_service.get_width()
         max_y = self._video_service.get_height()
-        robot.move_next(max_x, max_y)
+        player1.move_next(max_x, max_y)
+        player2.move_next(max_x, max_y)
         
+
+        """
         for artifact in artifacts:
-            if robot.get_position().equals(artifact.get_position()):
-                message = artifact.get_message()
-                banner.set_text(message)    
+            if player1.get_position().equals(artifact.get_position()):
+                # set loss message
+                pass
+
+            if player2.get_position().equals(artifact.get_position()):
+                # set loss message
+                pass
+        """
         
     def _do_outputs(self, cast):
         """Draws the actors on the screen.
