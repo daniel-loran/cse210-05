@@ -63,26 +63,23 @@ def main():
     player2.set_color(YELLOW)
     player2.set_position(position2)
     cast.add_actor("player2", player2)
+
     
-    # create the artifact trail loop
-        # text = chr(random.choice([42,111]))
+    # create the artifact trail loop based on where the player moves
+    for i in range(player2.get_position()):
+        playerTrail = Artifact()
+        text = playerTrail.set_text("#")
 
-        # x = random.randint(1, COLS - 1)
-        # y = random.randint(1, ROWS - 1)
-        # position = Point(x, y)
-        # position = position.scale(CELL_SIZE)
-
-        # r = random.randint(0, 255)
-        # g = random.randint(0, 255)
-        # b = random.randint(0, 255)
-        # color = Color(r, g, b)
+        x = player2.get_position().get_x()
+        y = player2.get_position().get_y()
+        position = Point(x, y)
+        position = position.scale(CELL_SIZE)
         
-        # artifact = Artifact()
-        # artifact.set_text(text)
-        # artifact.set_font_size(FONT_SIZE)
-        # artifact.set_color(color)
-        # artifact.set_position(position)
-        # cast.add_actor("artifacts", artifact)
+        playerTrail.set_text(text)
+        playerTrail.set_font_size(FONT_SIZE)
+        playerTrail.set_color(YELLOW)
+        playerTrail.set_position(position)
+        cast.add_actor("playerTrail", playerTrail)
     
     # start the game
     keyboard_service = KeyboardService(CELL_SIZE)
